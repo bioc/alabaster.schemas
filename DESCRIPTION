@@ -1,0 +1,12 @@
+Package: alabaster.schemas
+Title: Schemas for the Alabaster Framework
+Version: 0.98.0
+License: MIT + file LICENSE
+Date: 2022-09-19
+Description:
+    Stores all schemas required by various alabaster.* packages.
+    No computation should be performed by this package, as that is handled by alabaster.base.
+    We use a separate package instead of storing the schemas in alabaster.base itself,
+    to avoid conflating management of the schemas with code maintenence.
+Authors@R: person("Aaron", "Lun", role=c("cre", "aut"), email="infinite.monkeys.with.keyboards@gmail.com")
+RoxygenNote: 7.2.0
