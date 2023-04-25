@@ -1,6 +1,6 @@
 Package: alabaster.schemas
 Title: Schemas for the Alabaster Framework
-Version: 0.99.2
+Version: 1.0.0
 Date: 2023-04-14
 License: MIT + file LICENSE
 Description:
