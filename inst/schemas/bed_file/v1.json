@@ -1,18 +1,16 @@
 {
-    "$id": "gff_file/v1.json",
+    "$id": "bed_file/v1.json",
     "$schema": "http://json-schema.org/draft-07/schema",
     "additionalProperties": false,
-    "description": "A file in the general feature transfer (GFF) format, containing the coordinates of annotated features in relation to a reference sequence.",
+    "description": "A file in the browser extensible data (BED) format, containing a collection of genomic intervals.",
     "properties": {
         "$schema": {
             "description": "The schema to use.",
             "type": "string"
         },
-        "gff_file": {
-            "additionalProperties": false,
+        "bed_file": {
             "properties": {
                 "compression": {
-                    "default": "none",
                     "description": "The compression format.",
                     "enum": [
                         "none",
@@ -23,15 +21,16 @@
                     "type": "string"
                 },
                 "format": {
-                    "description": "The file format.",
+                    "default": "BED",
+                    "description": "Format of the BED file. If BED, the exact format is determined by the number of columns inside the file (from 3 to 12).",
                     "enum": [
-                        "GFF2",
-                        "GFF3"
+                        "BED",
+                        "BED15"
                     ],
                     "type": "string"
                 },
                 "index": {
-                    "description": "Tabix file to index the features. If present, this assumes that the features in this GFF file are sorted by their genomic position.",
+                    "description": "Tabix file to index the intervals. If present, this assumes that the intervals in this BED file are sorted by their genomic position.",
                     "properties": {
                         "resource": {
                             "_children": {
@@ -66,7 +65,7 @@
                 }
             },
             "required": [
-                "format"
+                "compression"
             ],
             "type": "object"
         },
@@ -86,10 +85,10 @@
     },
     "required": [
         "$schema",
-        "gff_file",
+        "bed_file",
         "md5sum",
         "path"
     ],
-    "title": "GFF file",
+    "title": "BED File",
     "type": "object"
 }
