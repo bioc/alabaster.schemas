@@ -1,42 +1,38 @@
 {
-    "$id": "gff_file/v1.json",
+    "$id": "bam_file/v1.json",
     "$schema": "http://json-schema.org/draft-07/schema",
     "additionalProperties": false,
-    "description": "A file in the general feature transfer (GFF) format, containing the coordinates of annotated features in relation to a reference sequence.",
+    "description": "A file in the binary alignment map (BAM) format, containing sequence alignment data.",
     "properties": {
         "$schema": {
             "description": "The schema to use.",
             "type": "string"
         },
-        "gff_file": {
-            "additionalProperties": false,
+        "bam_file": {
+            "allOf": [
+                {
+                    "if": {
+                        "required": [
+                            "index"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "sorted": {
+                                "const": "coordinate"
+                            }
+                        }
+                    }
+                }
+            ],
             "properties": {
-                "compression": {
-                    "default": "none",
-                    "description": "The compression format.",
-                    "enum": [
-                        "none",
-                        "gzip",
-                        "bzip2",
-                        "bgzip"
-                    ],
-                    "type": "string"
-                },
-                "format": {
-                    "description": "The file format.",
-                    "enum": [
-                        "GFF2",
-                        "GFF3"
-                    ],
-                    "type": "string"
-                },
                 "index": {
-                    "description": "Tabix file to index the features. If present, this assumes that the features in this GFF file are sorted by their genomic position.",
+                    "description": "Index of the BAM file. If this is present, `sorted` must be set to \"coordinate\".",
                     "properties": {
                         "resource": {
                             "_children": {
                                 "contains": [
-                                    "tabix_file"
+                                    "bam_file_index"
                                 ]
                             },
                             "properties": {
@@ -63,11 +59,18 @@
                         "resource"
                     ],
                     "type": "object"
+                },
+                "sorted": {
+                    "default": "none",
+                    "description": "Whether and how the BAM file has been sorted.",
+                    "enum": [
+                        "name",
+                        "coordinate",
+                        "none"
+                    ],
+                    "type": "string"
                 }
             },
-            "required": [
-                "format"
-            ],
             "type": "object"
         },
         "is_child": {
@@ -86,10 +89,10 @@
     },
     "required": [
         "$schema",
-        "gff_file",
+        "bam_file",
         "md5sum",
         "path"
     ],
-    "title": "GFF file",
+    "title": "BAM File",
     "type": "object"
 }
