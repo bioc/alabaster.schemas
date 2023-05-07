@@ -1,19 +1,19 @@
 {
-    "$id": "bigwig_file/v1.json",
+    "$id": "bgzip_index_file/v1.json",
     "$schema": "http://json-schema.org/draft-07/schema",
     "_attributes": {
         "restore": {
-            "R": "alabaster.files::loadBigWigWrapper"
+            "R": "alabaster.files::loadBgzipIndexWrapper"
         }
     },
     "additionalProperties": false,
-    "description": "A bigWig file containing dense and continuous data across genome regions.",
+    "description": "An index file for block Gzip-compressed files. This is usually produced by running `samtools faidx` on a bgzip-compressed FASTA file.",
     "properties": {
         "$schema": {
             "description": "The schema to use.",
             "type": "string"
         },
-        "bigwig_file": {
+        "bgzip_index_file": {
             "properties": {
                 "other_data": {
                     "description": "Location of additional metadata for this file, typically stored as a list (via the `simple_list` schema). Ommitted if no other metadata is provided.",
@@ -49,8 +49,7 @@
                     ],
                     "type": "object"
                 }
-            },
-            "type": "object"
+            }
         },
         "is_child": {
             "default": false,
@@ -68,10 +67,10 @@
     },
     "required": [
         "$schema",
-        "bigwig_file",
+        "bgzip_index_file",
         "md5sum",
         "path"
     ],
-    "title": "bigWig File",
+    "title": "Block Gzip Index File",
     "type": "object"
 }

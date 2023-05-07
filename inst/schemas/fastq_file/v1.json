@@ -1,6 +1,11 @@
 {
     "$id": "fastq_file/v1.json",
     "$schema": "http://json-schema.org/draft-07/schema",
+    "_attributes": {
+        "restore": {
+            "R": "alabaster.files::loadFastqWrapper"
+        }
+    },
     "additionalProperties": false,
     "description": "A FASTQ file containing a collection of biological sequences with quality scores, typically corresponding to experimental data.",
     "properties": {
@@ -9,6 +14,39 @@
             "type": "string"
         },
         "fastq_file": {
+            "allOf": [
+                {
+                    "if": {
+                        "required": [
+                            "index"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "compression": {
+                                "enum": [
+                                    "none",
+                                    "bgzip"
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "required": [
+                            "gzindex"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "compression": {
+                                "const": "bgzip"
+                            }
+                        }
+                    }
+                }
+            ],
             "properties": {
                 "compression": {
                     "description": "The compression format.",
@@ -20,8 +58,109 @@
                     ],
                     "type": "string"
                 },
+                "gzindex": {
+                    "description": "Index file for the block Gzip compression. If present, `compression` should be \"bgzip\".",
+                    "properties": {
+                        "resource": {
+                            "_children": {
+                                "contains": [
+                                    "bgzip_index_file"
+                                ]
+                            },
+                            "properties": {
+                                "path": {
+                                    "description": "Relative path of the resource from the root of the project directory.",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Type of file. Local files should be present in the same project directory.",
+                                    "enum": [
+                                        "local"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "path"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "resource"
+                    ],
+                    "type": "object"
+                },
+                "index": {
+                    "description": "Index file for the sequences. If present, `compression` should be `\"none\"` or \"bgzip\".",
+                    "properties": {
+                        "resource": {
+                            "_children": {
+                                "contains": [
+                                    "fa_index_file"
+                                ]
+                            },
+                            "properties": {
+                                "path": {
+                                    "description": "Relative path of the resource from the root of the project directory.",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Type of file. Local files should be present in the same project directory.",
+                                    "enum": [
+                                        "local"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "path"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "resource"
+                    ],
+                    "type": "object"
+                },
+                "other_data": {
+                    "description": "Location of additional metadata for this file, typically stored as a list (via the `simple_list` schema). Ommitted if no other metadata is provided.",
+                    "properties": {
+                        "resource": {
+                            "_children": {
+                                "contains": [
+                                    "simple_list"
+                                ]
+                            },
+                            "properties": {
+                                "path": {
+                                    "description": "Relative path of the resource from the root of the project directory.",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Type of file. Local files should be present in the same project directory.",
+                                    "enum": [
+                                        "local"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "path"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "resource"
+                    ],
+                    "type": "object"
+                },
                 "quality_encoding": {
-                    "default": "phred",
                     "description": "Encoding used for the base quality scores in a FASTQ file.",
                     "enum": [
                         "phred",
@@ -31,7 +170,6 @@
                     "type": "string"
                 },
                 "type": {
-                    "default": "DNA",
                     "description": "Type of sequence in the file.",
                     "enum": [
                         "DNA",
@@ -41,6 +179,11 @@
                     "type": "string"
                 }
             },
+            "required": [
+                "type",
+                "compression",
+                "quality_encoding"
+            ],
             "type": "object"
         },
         "is_child": {
