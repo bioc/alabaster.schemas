@@ -1,7 +1,7 @@
 Package: alabaster.schemas
 Title: Schemas for the Alabaster Framework
-Version: 1.1.1
-Date: 2023-05-07
+Version: 1.1.2
+Date: 2023-05-18
 License: MIT + file LICENSE
 Description:
     Stores all schemas required by various alabaster.* packages.
@@ -15,5 +15,6 @@ biocViews:
     DataImport
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    BiocStyle
 VignetteBuilder: knitr
